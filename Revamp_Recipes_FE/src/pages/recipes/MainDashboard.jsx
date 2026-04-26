@@ -107,7 +107,7 @@ const MainDashboard = () => {
                 <Container maxWidth="lg">
                     <Toolbar sx={{ py: { xs: 0.5, sm: 1 }, gap: { xs: 1, sm: 2 } }}>
                         <Typography variant="h6" sx={{ fontWeight: 800, color: '#1e293b', display: { xs: 'none', md: 'block' } }}>
-                            Revamp<span style={{ color: '#3b82f6' }}>Recipes</span>
+                            Eksa<span style={{ color: '#3b82f6' }}>Recipes</span>
                         </Typography>
 
                         {/* PROFILE */}
