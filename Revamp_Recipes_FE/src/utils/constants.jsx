@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://thin-geckos-joke.loca.lt';
+export const BASE_URL = 'https://happy-dingos-work.loca.lt';
 
 export const validateEmail = (email) => {
     return String(email)
