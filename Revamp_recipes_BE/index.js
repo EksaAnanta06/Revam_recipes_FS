@@ -15,6 +15,7 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.options("*", cors());
 app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
