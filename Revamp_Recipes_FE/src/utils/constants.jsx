@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://localhost:3100';
+export const BASE_URL = 'https://thin-geckos-joke.loca.lt';
 
 export const validateEmail = (email) => {
     return String(email)
