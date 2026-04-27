@@ -185,8 +185,9 @@ const RecipeCard = ({ id, recipe, api }) => {
                             className="card-img"
                             component="img"
                             image={recipe.image_url
-                                ? `${BASE_URL.replace(/\/$/, "")}${recipe.image_url}`
-                                : "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"}
+                                ? `${BASE_URL.replace(/\/+$/, "")}/${recipe.image_url.replace(/^\/+/, "")}`
+                                : "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"
+                            }
                             alt={recipe.title}
                             sx={{
                                 position: "absolute", top: 0, width: "100%", height: "100%",
