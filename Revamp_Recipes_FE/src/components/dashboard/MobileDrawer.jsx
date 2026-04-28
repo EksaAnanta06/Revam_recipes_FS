@@ -1,14 +1,18 @@
 import {
     Drawer, IconButton, List, ListItem,
-    ListItemButton, ListItemIcon, ListItemText, Divider,
+    ListItemButton, ListItemText,
     Avatar
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import CloseIcon from '@mui/icons-material/Close';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from "react-router-dom";
+
+
 
 const MobileDrawer = ({ methode, user }) => {
+    const navigate = useNavigate();
     const { isOpen, toggleDrawer, menu } = methode;
     const token = localStorage.getItem("token");
 
@@ -123,7 +127,7 @@ const MobileDrawer = ({ methode, user }) => {
                     <button
                         className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg
               bg-red-50 text-red-600 text-sm font-medium hover:bg-red-100 transition-colors"
-                        onClick={() => {/* handle logout */ }}
+                        onClick={() => { localStorage.clear(); navigate("/login", { replace: true }); }}
                     >
                         <LogoutIcon sx={{ fontSize: 16 }} />
                         Keluar
@@ -132,7 +136,7 @@ const MobileDrawer = ({ methode, user }) => {
                     <button
                         className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg
               bg-blue-50 text-blue-600 text-sm font-medium hover:bg-blue-100 transition-colors"
-                        onClick={() => {/* handle login */ }}
+                            onClick={() => { navigate("/login", { replace: true }); }}
                     >
                         <LoginIcon sx={{ fontSize: 16 }} />
                         Masuk

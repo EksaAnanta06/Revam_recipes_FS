@@ -8,6 +8,7 @@ import ResetPassword from "./pages/auth/ResetPassword.jsx";
 import DetailRecipe from "./pages/recipes/DetailRecipe.jsx";
 import AddRecipe from "./pages/recipes/AddRecipe.jsx";
 import MyRecipes from "./pages/myRecipes/MyRecipes.jsx";
+import { Test } from "./pages/Test.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: "/myRecipes",
     element: <MyRecipes />
+  },
+  {
+    path: "/test",
+    element: <Test />
   }
 ]);
 

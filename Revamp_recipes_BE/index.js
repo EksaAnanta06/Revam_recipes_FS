@@ -11,12 +11,7 @@ import { fileURLToPath } from "url";
 env.config();
 const PORT = process.env.PORT;
 const app = express();
-app.use(cors({
-    origin: "https://revam-recipes-fs-98gi.vercel.app", // Alamat frontend Vercel
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "ngrok-skip-browser-warning"],
-    credentials: true
-}));
+app.use(cors())
 app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
