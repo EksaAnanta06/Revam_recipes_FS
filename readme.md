@@ -10,7 +10,7 @@ Frontend:
 - Routing: React Router v7
 - Styling: Tailwind CSS v4 & Material UI (MUI) v7
 - Form Management: React Hook Form with Zod (Schema Validation)
-- State & Data Fetching: Axios & JWT Decode
+- State & Data Fetching: Fetch & JWT Decode
 
 Backend:
 Runtime: - Node.js
