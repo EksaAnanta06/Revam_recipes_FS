@@ -13,9 +13,9 @@ Frontend:
 - State & Data Fetching: Fetch & JWT Decode
 
 Backend:
-Runtime: - Node.js
-Framework: - Express.js 5 (Latest stable features)
-Database: - MySQL with mysql2 driver
+- Runtime: - Node.js
+- Framework: - Express.js 5 (Latest stable features)
+- Database: - MySQL with mysql2 driver
 Authentication:
 - JSON Web Token (JWT) untuk akses token.
 - Passport.js (Google OAuth 2.0) untuk login sosial.
@@ -30,19 +30,6 @@ Authentication:
 - Validation: Validasi data yang ketat baik di sisi client (Zod) maupun server.
 - Responsive Design: Tampilan yang optimal di berbagai perangkat berkat kombinasi Tailwind dan MUI.
 - Reset Password: Fitur pemulihan kata sandi melalui integrasi Nodemailer.
-
-📁 Struktur Proyek:
-├── frontend/             # React application (Vite)
-│   ├── src/
-│   │   ├── components/   # Reusable UI components
-│   │   ├── pages/        # Main views/routes
-│   │   └── ...
-├── backend/              # Node.js/Express server
-│   ├── controllers/      # Logic handler
-│   ├── routes/           # API Endpoints
-│   ├── middleware/       # Auth & Upload middlewares
-│   └── index.js          # Entry point
-
 
 🚀 Instalasi & Persiapan:
 1. Clone Repository
