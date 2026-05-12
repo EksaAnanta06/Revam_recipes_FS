@@ -1,36 +1,39 @@
-import React from 'react'
-import { useState } from 'react';
-
-
+import { useState } from 'react'
 
 export const Test = () => {
-    const [files, setFiles] = useState(null);
+    let [images, setImages] = useState({
+        gambar1: null,
+        gambar2: null,
+        gambar3: null
+    })
+
+    const handleChange = (e) => {
+        const { name, files } = e.target;
+       
+        setImages(prev => ({
+            ...prev, 
+            [name]: files[0]
+        }));
+
+        console.log(images)
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('file', files);
-        console.log(formData)
-        console.log("isi form data: ", formData.get("file"));
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <label className='text-black text-2xl font-bold'>Masukan File</label>
-                <input
-                    onChange={(e) => setFiles(e.target.files[0])}
-                    className='bg-gray-600 border rounded text-amber-50'
-                    accept="image/png, image/jpeg, image/gif, image/webp, image/svg"
-                    type="file"
-                    name="file"
-                />
-                <button
-                    className='bg-green-400 p-1 text-white rounded'
-                >Submit</button>
+        <>
+            <form className='flex flex-col justify-center w-max ml-4 mt-4' onSubmit={handleSubmit}>
+                <label >masukan gambar 1</label>
+                <input onChange={handleChange} type="file" name="gambar1" className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                <label >masukan gambar 2</label>
+                <input onChange={handleChange} type="file" name="gambar2" className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                <label >masukan gambar 3</label>
+                <input onChange={handleChange} type="file" name="gambar3" className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                <button className='w-max border rounded p-2 mt-2 bg-blue-500 text-white'>kirim</button>
             </form>
-        </div>
+        </>
     )
 }
-
 
