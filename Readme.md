@@ -60,3 +60,11 @@ Jalankan server: npm run dev
 Masuk ke folder frontend: cd vite-project (atau sesuai nama folder)
 Install dependensi: npm install
 Jalankan aplikasi: npm run dev
+
+
+🚀 Development Status: 🚧 50% Completed
+Proyek ini sedang dalam tahap pengembangan aktif. Saat ini, fungsionalitas inti untuk autentikasi dan manajemen data dasar sudah berjalan, namun masih ada beberapa fitur besar yang sedang dikerjakan dan gak tahu beresnya kapan.
+
+
+Link Website:
+https://revam-recipes-fs-98gi.vercel.app
