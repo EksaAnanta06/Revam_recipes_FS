@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MyRecipes = () => {
+const DashboardMyRecipes = () => {
     return (
        <>
         
@@ -8,4 +8,4 @@ const MyRecipes = () => {
     )
 }
 
-export default MyRecipes
+export default DashboardMyRecipes;

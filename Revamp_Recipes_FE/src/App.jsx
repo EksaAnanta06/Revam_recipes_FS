@@ -1,19 +1,18 @@
 import Login from "./pages/auth/Login.jsx";
 import Register from "./pages/auth/Register.jsx";
-import Home from "./pages/recipes/MainDashboard.jsx";
+import Dashboard from "./pages/recipes/DashboardAllRecipes.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GoogleCallback from "./Services/googleCallback.jsx";
 import ForgotPassword from "./pages/auth/ForgotPassword.jsx";
 import ResetPassword from "./pages/auth/ResetPassword.jsx";
 import DetailRecipe from "./pages/recipes/DetailRecipe.jsx";
 import AddRecipe from "./pages/recipes/AddRecipe.jsx";
-import MyRecipes from "./pages/myRecipes/MyRecipes.jsx";
-import { Test } from "./pages/Test.jsx";
+import MyRecipes from "./pages/myRecipes/DashboardMyRecipes.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Dashboard />,
   },
   {
     path: "/oauth-success",
@@ -47,10 +46,6 @@ const router = createBrowserRouter([
     path: "/myRecipes",
     element: <MyRecipes />
   },
-  {
-    path: "/test",
-    element: <Test />
-  }
 ]);
 
 const App = () => {

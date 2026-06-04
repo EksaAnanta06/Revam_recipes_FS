@@ -32,22 +32,23 @@ Authentication:
 - Reset Password: Fitur pemulihan kata sandi melalui integrasi Nodemailer.
 
 🚀 Instalasi & Persiapan:
-1. Clone Repository
-Bash
-git clone https://github.com/EksaAnanta06/Revam_recipes_FS.git
-cd recipes-revamp
+- Clone Repository:
+1. git clone https://github.com/EksaAnanta06/Revam_recipes_FS.git
+2. cd Revamp_Recipes_FE (untuk menjalankan front end, tapi sebelumnya harus setup dulu frontendnya dibagian bawah)
+3. buat terminal baru untuk menjalankan backend dan masuk ke directory awal lalu...
+4. cd Revamp_recipes_BE (untuk menjalankan Backend, tapi sebelumnya harus setup dulu backendnya dibagian bawah)
 
-2. Setup Backend
-Masuk ke folder backend: cd backend
-Install dependensi: npm install
-Buat file .env dan lengkapi konfigurasi (DB_HOST, DB_USER, JWT_SECRET, GOOGLE_CLIENT_ID, dll).
-Jalankan server: npm run dev
+- Setup Backend:
+1. Masuk ke folder backend: cd Revamp_recipes_BE
+2. Install dependensi: npm install
+3. Buat file .env dan lengkapi konfigurasi (DB_HOST, DB_USER, JWT_SECRET, GOOGLE_CLIENT_ID, dll).
+4. Jangan lupa database MYSQL sudah menyala di computer kalian
+5. Jalankan server: npm run dev
 
-3. Setup Frontend
-Masuk ke folder frontend: cd vite-project (atau sesuai nama folder)
-Install dependensi: npm install
-Jalankan aplikasi: npm run dev
-
+- Setup Frontend
+1. Masuk ke folder frontend: cd Revamp_Recipes_FE
+2. Install dependensi: npm install
+3. Jalankan aplikasi: npm run dev
 
 🚀 Development Status: 🚧 50% Completed
 Proyek ini sedang dalam tahap pengembangan aktif. Saat ini, fungsionalitas inti untuk autentikasi dan manajemen data dasar sudah berjalan, namun masih ada beberapa fitur besar yang sedang dikerjakan dan gak tahu beresnya kapan.

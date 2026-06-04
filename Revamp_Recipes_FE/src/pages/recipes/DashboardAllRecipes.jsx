@@ -13,7 +13,8 @@ import SearchBar from '../../components/dashboard/SearchBar.jsx';
 import menu from '../../utils/hamburgerMenu.jsx';
 import { jwtDecode } from "jwt-decode";
 import ModernPagination from '../../components/dashboard/Paginations.jsx';
-const MainDashboard = () => {
+
+const DashboardAllRecipes = () => {
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
@@ -182,4 +183,4 @@ const MainDashboard = () => {
     );
 };
 
-export default MainDashboard;
+export default DashboardAllRecipes;
