@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
     Box, AppBar, Toolbar, Typography,
     Container, Grid, IconButton, CircularProgress,
@@ -11,94 +11,33 @@ import HeroSection from '../../components/dashboard/HeroSection.jsx';
 import Profile from '../../components/dashboard/Profile.jsx';
 import SearchBar from '../../components/dashboard/SearchBar.jsx';
 import menu from '../../utils/hamburgerMenu.jsx';
-import { jwtDecode } from "jwt-decode";
 import ModernPagination from '../../components/dashboard/Paginations.jsx';
+import { useUser } from '../../hooks/useProfileUser.jsx';
+import { useRecipes } from '../../hooks/useRecipe.jsx';
 
 const DashboardAllRecipes = () => {
-    const [recipes, setRecipes] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [search, setSearch] = useState("");
-    const [page, setPage] = useState(1);
+    const user = useUser();
+    const {
+        recipes,
+        loading,
+        search,
+        setSearch,
+        setPage,
+        fetchRecipes
+    } = useRecipes();
+
     const [isOpen, setIsOpen] = useState(false);
-    const [user, setUser] = useState(null);
+    
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
         setIsOpen(open);
     };
-    const fetchRecipes = async () => {
-
-        const params = new URLSearchParams({
-            search: search,
-            page: page,
-            limit: 8
-        });
-        setLoading(true);
-
-        try {
-            const response = await fetch(`${BASE_URL}/api/recipes?${params.toString()}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
-                    headers: new Headers({
-                        "ngrok-skip-browser-warning": "true",
-                    }),
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error("Gagal mengambil data dari server");
-            }
-
-            const result = await response.json();
-            console.log(result)
-
-            if (result.success) {
-                setRecipes(result);
-            }
-
-        } catch (error) {
-            console.error("Error Fetching:", error.message);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleChangePage = (event, value) => {
-        console.log(value)
         setPage(value);
     };
-
-    useEffect(() => {
-        let token = localStorage.getItem("token");
-        const user = token ? jwtDecode(localStorage.getItem("token")) : null;
-
-        if (!user) {
-            setUser(null)
-        } else {
-            setUser(user)
-        }
-    }, [])
-
-    useEffect(() => {
-        // Reset ke halaman 1 setiap kali user mulai mengetik/mencari
-        setPage(1);
-
-        const timeoutId = setTimeout(() => {
-            fetchRecipes();
-        }, 500);
-
-        return () => clearTimeout(timeoutId);
-
-        // Gunakan 'search' sebagai pemicu utama
-    }, [search]);
-
-    useEffect(() => {
-        // Gunakan useEffect terpisah khusus untuk perpindahan halaman
-        fetchRecipes();
-    }, [page]);
 
     return (
         <Box sx={{ bgcolor: '#fff', minHeight: '100vh', position: "relative" }}>
@@ -143,7 +82,7 @@ const DashboardAllRecipes = () => {
                         </div>
 
                         {/* MUI Drawer (Mobile Menu) */}
-                        <MobileDrawer methode={{ isOpen, toggleDrawer, menu }}  user={user} />
+                        <MobileDrawer methode={{ isOpen, toggleDrawer, menu }} user={user} />
 
                     </Toolbar>
                 </Container>
@@ -163,7 +102,7 @@ const DashboardAllRecipes = () => {
                     </Box>
                 ) : (
                     <Grid container >
-                        {recipes?.data?.length > 0 ? recipes.data.map((recipe) => (
+                        {recipes?.length > 0 ? recipes.map((recipe) => (
                             <RecipeCard key={recipe.id} id={recipe.id} recipe={recipe} api={fetchRecipes} />
                         )) : (
                             <Box sx={{ width: '100%', textAlign: 'center', py: 10 }}>
