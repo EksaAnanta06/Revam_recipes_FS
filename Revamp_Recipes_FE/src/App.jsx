@@ -7,7 +7,8 @@ import ForgotPassword from "./pages/auth/ForgotPassword.jsx";
 import ResetPassword from "./pages/auth/ResetPassword.jsx";
 import DetailRecipe from "./pages/recipes/DetailRecipe.jsx";
 import AddRecipe from "./pages/recipes/AddRecipe.jsx";
-import MyRecipes from "./pages/myRecipes/DashboardMyRecipes.jsx";
+import MyRecipes from "./pages/recipes/DashboardMyRecipes.jsx";
+import DashboardLayout from "./layouts/DahboardLayout.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
   {
     path: "/myRecipes",
     element: <MyRecipes />
-  },
+  }
 ]);
 
 const App = () => {

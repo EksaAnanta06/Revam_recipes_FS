@@ -16,8 +16,6 @@ export const Form = ({
     showPassword,
     setShowPassword
 }) => {
-
-    console.log(handleGoogleLogin)
     const isLogin = type === 'login';
     const isRegister = type === 'register';
     const isReset = type === 'resetPassword';

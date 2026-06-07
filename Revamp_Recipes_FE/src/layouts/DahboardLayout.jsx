@@ -1,9 +1,12 @@
 import React from 'react';
 import { Box, AppBar, Container, Toolbar, Typography, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-// Import komponen Profile, SearchBar, MobileDrawer, dll milikmu
+import menu from '../utils/hamburgerMenu.jsx';
+import Profile from '../components/dashboard/Profile';
+import SearchBar from '../components/dashboard/SearchBar';
+import MobileDrawer from '../components/dashboard/MobileDrawer';
 
-const MainLayout = ({ children, search, setSearch, user, menu, isOpen, toggleDrawer }) => {
+const DashboardLayout = ({ children, search, setSearch, user, isOpen, toggleDrawer }) => {
     return (
         <Box sx={{ bgcolor: '#fff', minHeight: '100vh', position: "relative" }}>
             {/* NAVBAR */}
@@ -45,4 +48,4 @@ const MainLayout = ({ children, search, setSearch, user, menu, isOpen, toggleDra
     );
 };
 
-export default MainLayout;
+export default DashboardLayout;

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { getRecipesService } from "../Services/recipeService.jsx";
 
-export const useRecipes = () => {
+export const useRecipes = ({ isMyRecipes = false } = {}) => {
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
@@ -14,19 +14,20 @@ export const useRecipes = () => {
             const result = await getRecipesService({
                 search: targetSearch,
                 page: targetPage,
-                limit: 8
+                limit: 8,
+                isMyRecipes
             });
 
             if (result.success) {
                 // Pastikan format dari API beneran result.data adalah Array
-                setRecipes(result.data || []);
+                setRecipes(result || []);
             }
         } catch (error) {
             console.error("Error dari service:", error.message);
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [isMyRecipes]);
 
     // SATU-SATUNYA useEffect untuk mengontrol kapan data harus di-ambil
     useEffect(() => {
