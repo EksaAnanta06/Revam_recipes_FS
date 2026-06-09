@@ -9,11 +9,30 @@ import DetailRecipe from "./pages/recipes/DetailRecipe.jsx";
 import AddRecipe from "./pages/recipes/AddRecipe.jsx";
 import MyRecipes from "./pages/recipes/DashboardMyRecipes.jsx";
 import DashboardLayout from "./layouts/DahboardLayout.jsx";
+import DashboardAllRecipes from "./pages/recipes/DashboardAllRecipes.jsx";
+import DashboardMyRecipes from "./pages/recipes/DashboardMyRecipes.jsx";
+import Layouting from "../src/kasus/Layouting.jsx";
+import ChildOne from "./kasus/ChildOne.jsx";
+import ChildTwo from "./kasus/ChildTwo.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dashboard />,
+    element: <DashboardLayout />,
+    children: [
+      {
+        index: true,
+        element: <DashboardAllRecipes />
+      },
+      {
+        path: "allRecipes", // 👈 Hapus tanda "/" di depan
+        element: <DashboardAllRecipes />
+      },
+      {
+        path: "myRecipes",  // 👈 Hapus tanda "/" di depan
+        element: <DashboardMyRecipes />
+      }
+    ]
   },
   {
     path: "/oauth-success",
@@ -46,6 +65,27 @@ const router = createBrowserRouter([
   {
     path: "/myRecipes",
     element: <MyRecipes />
+  },
+
+
+
+  {
+    path: "/dashboard",
+    element: <Layouting />,
+    children: [
+      {
+        index: true,
+        element: <ChildOne />
+      },
+      {
+        path: "child-one",
+        element: <ChildOne />
+      },
+      {
+        path: "child-two",
+        element: <ChildTwo />
+      }
+    ]
   }
 ]);
 

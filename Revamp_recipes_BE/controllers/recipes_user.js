@@ -3,29 +3,107 @@ import db from "../config/connect.js";
 const getMyRecipes = async (req, res) => {
     const userId = req.user.id;
 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 8;
+    const search = req.query.search || "";
+
+    const offset = (page - 1) * limit;
+    const searchValue = `%${search}%`;
+
     try {
-        const [recipes] = await db.query(
-            `SELECT id, title, description, image_url, created_at
-             FROM recipes
-             WHERE user_id = ?
-             ORDER BY created_at DESC`,
-            [userId]
+        // Hitung total data
+        const [[{ total }]] = await db.query(`
+            SELECT COUNT(*) AS total
+            FROM recipes
+            WHERE user_id = ?
+            AND (
+                title LIKE ?
+                OR description LIKE ?
+            )
+        `, [userId, searchValue, searchValue]);
+
+        // Ambil resep user
+        const [rows] = await db.query(`
+            SELECT
+                r.id,
+                r.title,
+                r.description,
+                r.created_at,
+                r.image_url,
+                u.id AS user_id,
+                u.username
+            FROM recipes r
+            JOIN users u ON r.user_id = u.id
+            WHERE r.user_id = ?
+            AND (
+                r.title LIKE ?
+                OR r.description LIKE ?
+            )
+            ORDER BY r.created_at DESC
+            LIMIT ? OFFSET ?
+        `, [userId, searchValue, searchValue, limit, offset]);
+
+        const finalData = await Promise.all(
+            rows.map(async (recipe) => {
+
+                // komentar
+                const [comments] = await db.query(`
+                    SELECT
+                        c.id,
+                        c.content,
+                        c.created_at,
+                        u.username
+                    FROM comments c
+                    JOIN users u ON c.user_id = u.id
+                    WHERE c.recipe_id = ?
+                `, [recipe.id]);
+
+                // total like
+                const [[{ totalLikes }]] = await db.query(`
+                    SELECT COUNT(*) AS totalLikes
+                    FROM recipe_likes
+                    WHERE recipe_id = ?
+                `, [recipe.id]);
+
+                // cek like user
+                const [[likeCheck]] = await db.query(`
+                    SELECT id
+                    FROM recipe_likes
+                    WHERE recipe_id = ?
+                    AND user_id = ?
+                `, [recipe.id, userId]);
+
+                return {
+                    ...recipe,
+                    comments,
+                    totalLikes: totalLikes || 0,
+                    isLiked: !!likeCheck
+                };
+            })
         );
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
-            data: recipes
-        })
-
+            message: "resep milik user berhasil ditampilkan",
+            pagination: {
+                totalData: total,
+                totalPage: Math.ceil(total / limit),
+                currentPage: page,
+                limit
+            },
+            data: finalData
+        });
 
     } catch (err) {
-        console.log(err)
-        res.status(500).json({
+        console.error("getMyRecipes error:", err);
+
+        return res.status(500).json({
             success: false,
-            messsage: "server error"
-        })
+            message: "server error",
+            data: null
+        });
     }
-}
+};
 
 const updateMyRecipe = async (req, res) => {
     const userId = req.user.id;

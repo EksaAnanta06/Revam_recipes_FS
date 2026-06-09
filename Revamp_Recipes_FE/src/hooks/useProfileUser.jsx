@@ -1,40 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { jwtDecode } from "jwt-decode";
 
+const decodeToken = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    try {
+        return jwtDecode(token);
+    } catch {
+        return null;
+    }
+};
+
 export const useUser = () => {
-    // 1. Inisialisasi state langsung dengan fungsi (Lazy Initial State)
-    const [user, setUser] = useState(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            try {
-                return jwtDecode(token);
-            } catch (error) {
-                console.error("Invalid token:", error);
-                return null;
-            }
-        }
-        return null; // Kalau gak ada token, otomatis default-nya null
-    });
+    // Lazy init sudah baca token saat pertama render — tidak perlu sync ulang di effect
+    const [user, setUser] = useState(decodeToken);
 
-    // 2. useEffect sekarang cuma bertugas sinkronisasi kalau ada perubahan di luar (opsional)
-    useEffect(() => {
-        const handleStorageChange = () => {
-            const token = localStorage.getItem("token");
-            if (!token) {
-                setUser(null);
-            } else {
-                try {
-                    setUser(jwtDecode(token));
-                } catch {
-                    setUser(null);
-                }
-            }
-        };
-
-        // Dengerin perubahan localStorage (bila perlu, misal user logout di tab sebelah)
-        window.addEventListener("storage", handleStorageChange);
-        return () => window.removeEventListener("storage", handleStorageChange);
+    const syncUser = useCallback(() => {
+        setUser(decodeToken());
     }, []);
+
+    useEffect(() => {
+        // HAPUS syncUser() di sini — lazy init sudah cukup untuk mount pertama
+        window.addEventListener("storage", syncUser);
+        window.addEventListener("user-updated", syncUser);
+
+        return () => {
+            window.removeEventListener("storage", syncUser);
+            window.removeEventListener("user-updated", syncUser);
+        };
+    }, [syncUser]);
 
     return user;
 };

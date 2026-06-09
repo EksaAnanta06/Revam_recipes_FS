@@ -1,12 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, AppBar, Container, Toolbar, Typography, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import menu from '../utils/hamburgerMenu.jsx';
 import Profile from '../components/dashboard/Profile';
 import SearchBar from '../components/dashboard/SearchBar';
 import MobileDrawer from '../components/dashboard/MobileDrawer';
+import menu from '../utils/hamburgerMenu.jsx';
+import { useUser } from '../hooks/useProfileUser.jsx';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import ModernPagination from '../components/dashboard/Paginations.jsx';
+import HeroSection from '../components/dashboard/HeroSection.jsx';
+import { useRecipes } from '../hooks/useRecipe.jsx';
 
-const DashboardLayout = ({ children, search, setSearch, user, isOpen, toggleDrawer }) => {
+const DashboardLayout = () => {
+    const user = useUser();
+    const location = useLocation();
+    const isMyRecipesPage = location.pathname === '/myRecipes';
+    const { recipes, loading, search, setSearch, setPage } = useRecipes({
+        isMyRecipes: isMyRecipesPage
+    });
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleDrawer = (open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        setIsOpen(open);
+    };
+
+    const handleChangePage = (event, value) => {
+        setPage(value);
+    };
+
     return (
         <Box sx={{ bgcolor: '#fff', minHeight: '100vh', position: "relative" }}>
             {/* NAVBAR */}
@@ -35,14 +60,51 @@ const DashboardLayout = ({ children, search, setSearch, user, isOpen, toggleDraw
                                 <MenuIcon className="text-gray-900" />
                             </IconButton>
                         </div>
-                        <MobileDrawer methode={{ isOpen, toggleDrawer, menu }} user={user} />
+                        <MobileDrawer methode={{ isOpen, toggleDrawer }} user={user} />
                     </Toolbar>
                 </Container>
             </AppBar>
 
-            {/* KONTEN DINAMIS */}
+            {/* KONTEN UTAMA */}
             <Container maxWidth="lg" sx={{ mt: { xs: 2, md: 5 } }}>
-                {children}
+                <HeroSection />
+
+                <Box sx={{ mb: 2 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 1000, color: '#1e293b', display: 'inline-block', position: 'relative' }}>
+                        {isMyRecipesPage ? "Resep Saya" : "Semua Resep"}
+                        <Box sx={{ position: 'absolute', bottom: -8, left: 0, width: 100, height: 4, bgcolor: '#3b82f6', borderRadius: 10 }} />
+                    </Typography>
+                </Box>
+
+                {/* Nav Tabs */}
+                <Box sx={{ display: 'flex', gap: 1, p: 1, bgcolor: '#eff6ff', borderRadius: 3, width: "fit-content", mb: 2 }}>
+                    {/* Menggunakan end untuk memastikan kecocokan rute index */}
+                    <NavLink to="/allRecipes" style={{ textDecoration: 'none' }}>
+                        {({ isActive }) => (
+                            <Box sx={{ px: 2, py: 0.6, borderRadius: 2.5, fontWeight: (isActive || location.pathname === '/') ? 700 : 500, fontSize: '0.82rem', cursor: 'pointer', transition: 'all 0.2s ease', border: (isActive || location.pathname === '/') ? '2px solid #3b82f6' : '2px solid transparent', bgcolor: (isActive || location.pathname === '/') ? '#3b82f6' : 'white', color: (isActive || location.pathname === '/') ? 'white' : '#64748b', boxShadow: (isActive || location.pathname === '/') ? '0 2px 6px rgba(59,130,246,0.25)' : 'none', '&:hover': { bgcolor: (isActive || location.pathname === '/') ? '#2563eb' : '#f1f5f9' } }}>
+                                Semua Resep
+                            </Box>
+                        )}
+                    </NavLink>
+
+                    <NavLink to="/myRecipes" style={{ textDecoration: 'none' }}>
+                        {({ isActive }) => (
+                            <Box sx={{ px: 2, py: 0.6, borderRadius: 2.5, fontWeight: isActive ? 700 : 500, fontSize: '0.82rem', cursor: 'pointer', transition: 'all 0.2s ease', border: isActive ? '2px solid #3b82f6' : '2px solid transparent', bgcolor: isActive ? '#3b82f6' : 'white', color: isActive ? 'white' : '#64748b', boxShadow: isActive ? '0 2px 6px rgba(59,130,246,0.25)' : 'none', '&:hover': { bgcolor: isActive ? '#2563eb' : '#f1f5f9' } }}>
+                                Resep Saya
+                            </Box>
+                        )}
+                    </NavLink>
+                </Box>
+
+                {/* Child Routing Component */}
+                <Outlet context={{ recipes, loading }} />
+
+                <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+                    <ModernPagination
+                        totalPage={recipes?.pagination?.totalPage || 1}
+                        onChange={handleChangePage}
+                    />
+                </Box>
             </Container>
         </Box>
     );

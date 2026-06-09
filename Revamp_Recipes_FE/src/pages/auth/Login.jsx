@@ -32,6 +32,9 @@ const Login = () => {
             if (response.data?.token) {
                 localStorage.setItem("token", response.data?.token);
                 navigate("/");
+                setTimeout(() => {
+                    window.dispatchEvent(new Event("user-updated"));
+                }, 0);
             } else {
                 setNotify({
                     open: true,
