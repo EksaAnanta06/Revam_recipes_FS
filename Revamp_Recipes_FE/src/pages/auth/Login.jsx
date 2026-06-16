@@ -31,10 +31,9 @@ const Login = () => {
             const response = await loginUser(formData);
             if (response.data?.token) {
                 localStorage.setItem("token", response.data?.token);
+                // Dispatch DULU, baru navigate
+                window.dispatchEvent(new Event("user-updated"));
                 navigate("/");
-                setTimeout(() => {
-                    window.dispatchEvent(new Event("user-updated"));
-                }, 0);
             } else {
                 setNotify({
                     open: true,

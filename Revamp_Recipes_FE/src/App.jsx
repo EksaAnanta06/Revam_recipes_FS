@@ -11,9 +11,8 @@ import MyRecipes from "./pages/recipes/DashboardMyRecipes.jsx";
 import DashboardLayout from "./layouts/DahboardLayout.jsx";
 import DashboardAllRecipes from "./pages/recipes/DashboardAllRecipes.jsx";
 import DashboardMyRecipes from "./pages/recipes/DashboardMyRecipes.jsx";
-import Layouting from "../src/kasus/Layouting.jsx";
-import ChildOne from "./kasus/ChildOne.jsx";
-import ChildTwo from "./kasus/ChildTwo.jsx";
+import Layout from "../src/case/Layout.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -25,11 +24,11 @@ const router = createBrowserRouter([
         element: <DashboardAllRecipes />
       },
       {
-        path: "allRecipes", // 👈 Hapus tanda "/" di depan
+        path: "allRecipes",
         element: <DashboardAllRecipes />
       },
       {
-        path: "myRecipes",  // 👈 Hapus tanda "/" di depan
+        path: "myRecipes",
         element: <DashboardMyRecipes />
       }
     ]
@@ -67,25 +66,9 @@ const router = createBrowserRouter([
     element: <MyRecipes />
   },
 
-
-
   {
-    path: "/dashboard",
-    element: <Layouting />,
-    children: [
-      {
-        index: true,
-        element: <ChildOne />
-      },
-      {
-        path: "child-one",
-        element: <ChildOne />
-      },
-      {
-        path: "child-two",
-        element: <ChildTwo />
-      }
-    ]
+    path: "/cases",
+    element: <Layout />
   }
 ]);
 
