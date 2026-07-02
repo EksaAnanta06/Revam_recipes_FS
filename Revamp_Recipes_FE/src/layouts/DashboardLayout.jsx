@@ -3,10 +3,11 @@ import { Box, AppBar, Container, Toolbar, Typography, IconButton } from '@mui/ma
 import MenuIcon from '@mui/icons-material/Menu';
 import Profile from '../components/dashboard/Profile';
 import SearchBar from '../components/dashboard/SearchBar';
+import SortDropdown from '../components/dashboard/SortDropdown.jsx';
 import MobileDrawer from '../components/dashboard/MobileDrawer';
 import menu from '../data/menuItems.jsx';
 import { useUser } from '../hooks/useProfileUser.jsx';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import ModernPagination from '../components/dashboard/Paginations.jsx';
 import HeroSection from '../components/dashboard/HeroSection.jsx';
 import { useRecipes } from '../hooks/useRecipe.jsx';
@@ -16,7 +17,7 @@ const DashboardLayout = () => {
     const user = useUser();
     const location = useLocation();
     const isMyRecipesPage = location.pathname === '/myRecipes';
-    const { recipes, loading, search, setSearch, setPage } = useRecipes({
+    const { recipes, loading, search, setSearch, setPage, sortBy, setSortBy } = useRecipes({
         isMyRecipes: isMyRecipesPage
     });
 
@@ -77,8 +78,18 @@ const DashboardLayout = () => {
                     </Typography>
                 </Box>
 
-                {/* Nav Tabs */}
-                <NavTabs />
+                {/* Nav Tabs + Sort — sejajar satu baris di desktop, tetap rapi di mobile */}
+                <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: 1,
+                    mb: 2,
+                }}>
+                    <NavTabs />
+                    <SortDropdown sortBy={sortBy} setSortBy={setSortBy} />
+                </Box>
 
                 {/* Child Routing Component */}
                 <Outlet context={{ recipes, loading }} />

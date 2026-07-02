@@ -15,14 +15,22 @@
  *   → fallback `|| []` dihapus karena jika success=true, result pasti ada
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { getRecipesService } from "../api/recipeApi.js";
+
+// Nilai sortBy yang valid — digunakan sebagai konstanta agar tidak typo
+export const SORT_OPTIONS = {
+    DEFAULT:       "default",       // Urutan dari server (terbaru)
+    MOST_LIKES:    "most_likes",    // Terbanyak likes
+    MOST_COMMENTS: "most_comments", // Terbanyak komentar
+};
 
 export const useRecipes = ({ isMyRecipes = false } = {}) => {
     const [recipes, setRecipes]   = useState(null);
     const [loading, setLoading]   = useState(true);
     const [search,  setSearch]    = useState("");
     const [page,    setPage]      = useState(1);
+    const [sortBy,  setSortBy]    = useState(SORT_OPTIONS.DEFAULT);
 
     const fetchRecipes = useCallback(async (targetPage, targetSearch) => {
         setLoading(true);
@@ -59,10 +67,33 @@ export const useRecipes = ({ isMyRecipes = false } = {}) => {
         setPage(1);
     };
 
+    // Sort data di frontend — tidak perlu fetch ulang ke server
+    // useMemo agar tidak re-sort setiap render kecuali recipes atau sortBy berubah
+    const sortedRecipes = useMemo(() => {
+        if (!recipes?.data) return recipes;
+
+        // Jika default, kembalikan apa adanya dari server
+        if (sortBy === SORT_OPTIONS.DEFAULT) return recipes;
+
+        const sorted = [...recipes.data].sort((a, b) => {
+            if (sortBy === SORT_OPTIONS.MOST_LIKES) {
+                return (b.totalLikes || 0) - (a.totalLikes || 0);
+            }
+            if (sortBy === SORT_OPTIONS.MOST_COMMENTS) {
+                return (b.comments?.length || 0) - (a.comments?.length || 0);
+            }
+            return 0;
+        });
+
+        return { ...recipes, data: sorted };
+    }, [recipes, sortBy]);
+
     return {
-        recipes,
+        recipes: sortedRecipes,
         loading,
         search,
+        sortBy,
+        setSortBy,
         setSearch: handleSearchChange,
         setPage,
     };
