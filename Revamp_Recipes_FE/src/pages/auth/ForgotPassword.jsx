@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Form } from '../../components/form/Form';
-import { forgotPassword } from "../../Services/authService.jsx";
+import { forgotPassword } from "../../api/authApi.js";
 import { useState } from "react";
 import Notification from "../../components/notifikasi/Notification.jsx";
 

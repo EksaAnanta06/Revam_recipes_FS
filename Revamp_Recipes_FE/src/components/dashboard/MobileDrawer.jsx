@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router-dom";
-import menu from '../../utils/hamburgerMenu.jsx';
+import menu from '../../data/menuItems.jsx';
 
 const MobileDrawer = ({ methode, user }) => {
     const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { BASE_URL } from "../../utils/constants";
+import { BASE_URL } from "../../constants/index.js";
 
 const HeroImage = ({ imageUrl, title }) => (
     <Box

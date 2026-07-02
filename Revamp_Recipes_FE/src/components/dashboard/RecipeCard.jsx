@@ -5,10 +5,10 @@ import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import Notification from '../notifikasi/Notification.jsx';
 import SendIcon from '@mui/icons-material/Send';
-import { BASE_URL } from '../../utils/constants';
+import { BASE_URL } from '../../constants/index.js';
 import { useNavigate } from 'react-router-dom';
 
-const RecipeCard = ({ id, recipe, api }) => {
+const RecipeCard = ({ id, recipe }) => {
     // State lokal per masing-masing card resep
     const likeKey = `liked_recipe_${recipe.id}`;
     const cachedLike = localStorage.getItem(likeKey);
@@ -18,6 +18,8 @@ const RecipeCard = ({ id, recipe, api }) => {
 
     const [isLiked, setIsLiked] = useState(initialLiked);
     const [likeCount, setLikeCount] = useState(recipe.totalLikes || 0);
+    // Optimistic comment count — diupdate lokal setelah POST berhasil
+    const [commentCount, setCommentCount] = useState(recipe.comments?.length || 0);
     const navigate = useNavigate();
     const [notify, setNotify] = useState({
         open: false,
@@ -115,6 +117,15 @@ const RecipeCard = ({ id, recipe, api }) => {
 
     const handleSubmitComment = async () => {
         const token = localStorage.getItem("token");
+
+        if (!token) {
+            return setNotify({
+                open: true,
+                message: "Silahkan login terlebih dahulu!",
+                severity: "error"
+            });
+        }
+
         try {
             const response = await fetch(`${BASE_URL}/api/recipes/${selectedRecipe.id}/comments`, {
                 method: "POST",
@@ -122,19 +133,18 @@ const RecipeCard = ({ id, recipe, api }) => {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 },
-                body: JSON.stringify({
-                    message: commentText
-                })
+                body: JSON.stringify({ message: commentText })
             });
 
+            const result = await response.json();
+
             if (response.ok) {
-                setTimeout(() => {
-                    api(); // Refresh data biar angka komentarnya nambah, api ini isinya fetchRecipe()
-                }, 1500)
+                // Optimistic update: tambah jumlah komentar langsung tanpa fetch ulang
+                setCommentCount((prev) => prev + 1);
 
                 setNotify({
                     open: true,
-                    message: "berhasil mengirim komentar!",
+                    message: "Berhasil mengirim komentar!",
                     severity: "success"
                 });
 
@@ -142,19 +152,18 @@ const RecipeCard = ({ id, recipe, api }) => {
             } else {
                 setNotify({
                     open: true,
-                    message: "silahkan login terlebih dahulu!",
+                    message: result?.message || "Gagal mengirim komentar!",
                     severity: "error"
                 });
             }
 
         } catch (error) {
+            console.error("Gagal kirim komentar:", error);
             setNotify({
                 open: true,
-                message: "gagal mengirim komentar cek koneksi anda!",
+                message: "Gagal mengirim komentar, cek koneksi Anda!",
                 severity: "error"
             });
-
-            console.error("Gagal kirim komentar:", error);
         }
     };
 
@@ -249,7 +258,7 @@ const RecipeCard = ({ id, recipe, api }) => {
                                     onClick={() => handleOpenComment(recipe)} sx={{ cursor: "pointer" }}>
                                     <MessageOutlinedIcon sx={{ fontSize: 15, color: "#64748b" }} />
                                     <Typography sx={{ fontSize: "11px", color: "#94a3b8" }}>
-                                        {recipe.comments?.length || 0}
+                                        {commentCount}
                                     </Typography>
                                 </Stack>
                             </Stack>

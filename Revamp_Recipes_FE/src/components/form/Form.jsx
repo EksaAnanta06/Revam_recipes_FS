@@ -3,7 +3,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import HeaderForm from './Header';
 import Footer from './Footer.jsx';
 import IconContainer from './IconContainer.jsx';
-import { validateEmail } from '../../utils/constants.jsx'
+import { validateEmail } from '../../utils/validators.js'
 
 export const Form = ({
     errorMismatch,

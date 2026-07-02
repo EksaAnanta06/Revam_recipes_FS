@@ -6,7 +6,7 @@ import {
     Grid
 } from '@mui/material';
 import { Restaurant, MenuBook, ChatBubbleOutline } from '@mui/icons-material';
-import { BASE_URL } from '../../utils/constants';
+import { BASE_URL } from '../../constants/index.js';
 import HeroImage from '../../components/detailComponents/HeroImage';
 import CommentCard from '../../components/detailComponents/CommentsCard';
 import IngredientCard from '../../components/detailComponents/IngredientCard';

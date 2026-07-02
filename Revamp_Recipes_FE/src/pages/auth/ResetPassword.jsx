@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Form from "../../components/form/Form.jsx";
 import Notification from "../../components/notifikasi/Notification.jsx";
-import { handleGoogleLogin, resetPassword } from "../../Services/authService.jsx";
+import { handleGoogleLogin, resetPassword } from "../../api/authApi.js";
 
 const ResetPassword = () => {
     const [formData, setFormData] = useState({ password: '', confirmPassword: '' });

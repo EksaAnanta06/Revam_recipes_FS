@@ -4,7 +4,7 @@ import {
     Stack, Paper, Divider
 } from '@mui/material';
 import { Add, Delete, CloudUpload, Send } from '@mui/icons-material';
-import { BASE_URL } from '../../utils/constants';
+import { BASE_URL } from '../../constants/index.js';
 import Notification from '../../components/notifikasi/Notification';
 import { useNavigate } from "react-router-dom";
 

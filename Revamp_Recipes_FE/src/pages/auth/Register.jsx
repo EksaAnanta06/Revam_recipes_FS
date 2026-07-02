@@ -2,7 +2,7 @@
 import { Form } from '../../components/form/Form';
 import Notification from '../../components/notifikasi/Notification.jsx';
 import { useOAuth } from '../../hooks/useOAuth.jsx';
-import { registerUser, handleGoogleLogin } from '../../Services/authService.jsx';
+import { registerUser, handleGoogleLogin } from '../../api/authApi.js';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
